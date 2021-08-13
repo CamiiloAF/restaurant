@@ -7,11 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
-import com.camiloagudelo.restaurantws.data.LoginRepository
+import com.camiloagudelo.restaurantws.data.auth.AuthRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
 
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -25,12 +25,12 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
 
         viewModelScope.launch {
-            loginRepository.login(email, password)
+            authRepository.login(email, password)
                 .onStart { _loginResult.value = Resource.Loading() }
                 .catch { e -> _loginResult.value = Resource.Error(e) }
                 .collect { response ->
                     _loginResult.value =
-                        Resource.Success(LoggedInUserView(displayName = response.nombre))
+                        Resource.Success(LoggedInUserView(displayName = response?.nombre ?: "No name"))
                 }
         }
     }

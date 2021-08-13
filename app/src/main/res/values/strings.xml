@@ -9,4 +9,8 @@
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <!-- Strings related to sign up -->
+    <string name="invalid_name">Nombre inválido</string>
+    <string name="invalid_city">Ciudad inválida</string>
+
 </resources>

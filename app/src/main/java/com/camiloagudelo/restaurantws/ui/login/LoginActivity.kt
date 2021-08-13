@@ -1,24 +1,21 @@
 package com.camiloagudelo.restaurantws.ui.login
 
+import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.os.PersistableBundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.databinding.ActivityLoginBinding
+import com.camiloagudelo.restaurantws.ui.auth.BaseAuthActivity
+import com.camiloagudelo.restaurantws.ui.sign_up.SignUpActivity
 import com.camiloagudelo.restaurantws.utils.afterTextChanged
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseAuthActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private val loginViewModel: LoginViewModel by viewModel()
@@ -26,14 +23,17 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.txtSignUp.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
+    }
+    override fun initializeBinding() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        observeLoginFromState()
-        observeLogin()
-        setUpInputsValidations()
     }
 
-    private fun observeLoginFromState() {
+    override fun observeFormState() {
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun observeLogin() {
+    override fun observeAuthAction() {
         lifecycleScope.launchWhenStarted {
             loginViewModel.loginResult.collect {
                 when (it) {
@@ -59,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
 
                     }
                     is Resource.Error -> {
-                        showLoginFailed(it.error?.message ?: "Error inesperado")
+                        showActionFailed(it.error?.message ?: "Error inesperado")
                         binding.loading.visibility = View.GONE
                     }
                     is Resource.Loading -> {
@@ -67,14 +67,14 @@ class LoginActivity : AppCompatActivity() {
                     }
                     is Resource.Success -> {
                         binding.loading.visibility = View.GONE
-                        showLoginFailed(it.data!!.toString())
+                        showActionFailed(it.data!!.toString())
                     }
                 }
             }
         }
     }
 
-    private fun setUpInputsValidations() {
+    override fun setUpInputsValidations() {
         binding.apply {
             loginEmail.afterTextChanged {
                 loginViewModel.loginDataChanged(
@@ -108,7 +108,4 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLoginFailed(errorString: String) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
-    }
 }

@@ -1,7 +1,29 @@
 package com.camiloagudelo.restaurantws.core.api
 
+//import com.camiloagudelo.restaurantws.core.models.ApiResponse
+//import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
+//import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
+//import retrofit2.Call
+//import retrofit2.http.Body
+//import retrofit2.http.GET
+//import retrofit2.http.POST
+//import retrofit2.http.Query
+
+//interface ApiService {
+//    @GET("api/clientes")
+//    suspend fun login(
+//        @Query("correo") email: String,
+//        @Query("contrasena") password: String
+//    ): Call<LoggedInUser>
+//
+//    @POST("api/clientes")
+//    fun signUpClient(@Body signUpClient: SignUpClient): Call<ApiResponse>
+//}
+
+
 import com.camiloagudelo.restaurantws.core.models.ApiResponse
-import com.camiloagudelo.restaurantws.data.model.LoggedInUser
+import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
+import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
 import com.google.gson.Gson
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -17,7 +39,7 @@ class ApiService {
     private val client = HttpClient(Android) {
         install(Logging) {
             logger = Logger.DEFAULT
-            level = LogLevel.HEADERS
+            level = LogLevel.ALL
         }
 
         install(JsonFeature) {
@@ -28,43 +50,54 @@ class ApiService {
             host = "wsc.fabricasoftware.co/api"
             url {
                 protocol = URLProtocol.HTTPS
+                header(HttpHeaders.Accept, ContentType.Application.Json)
+                contentType(ContentType.Application.Json)
             }
         }
+    }
 
-        HttpResponseValidator {
-            var x = false
-            validateResponse { response ->
-                if (response.status == HttpStatusCode.OK && !x) {
-                    val json = String(response.readBytes())
-                    val apiResponse = Gson().fromJson(json, ApiResponse::class.java)
+    private suspend inline fun <reified T>doCall(apiServiceCallback: ApiServiceCallback): T {
+        try {
+            val response = apiServiceCallback.execute()
+            val json = String(response.readBytes())
+            val apiResponse = Gson().fromJson(json, ApiResponse::class.java)
 
-                    if (apiResponse.respuesta == "ERROR") {
-                        x = true
-                        throw Exception(apiResponse.mensaje)
-                    }
-                }
-            }
-            handleResponseException { exception ->
-                if (exception !is ClientRequestException) return@handleResponseException
-                val exceptionResponse = exception.response
-                if (exceptionResponse.status == HttpStatusCode.NotFound) {
-                    val exceptionResponseText = exceptionResponse.readText()
-                    print(exceptionResponseText)
-                }
+            if (apiResponse.respuesta == "ERROR") {
+                throw Exception(apiResponse.mensaje)
             }
 
-
+           return Gson().fromJson(json, T::class.java)
+        } catch (e: ClientRequestException) {
+            throw Exception(e.response.status.description)
+        } catch (e: Exception) {
+            throw e
         }
-
     }
 
     suspend fun login(email: String, password: String): LoggedInUser {
-        return client.get(path = "clientes") {
-            url {
-                parameter("contrasena", password)
-                parameter("correo", email)
+        val callback = object : ApiServiceCallback {
+            override suspend fun execute(): HttpResponse {
+                return client.get(path = "clientes") {
+                    url {
+                        parameter("contrasena", password)
+                        parameter("correo", email)
+                    }
+                }
+            }
+
+        }
+        return doCall(callback)
+    }
+
+    suspend fun signUpClient(signUpClient: SignUpClient): ApiResponse {
+        val callback = object : ApiServiceCallback {
+            override suspend fun execute(): HttpResponse {
+                return client.post(path = "clientes") {
+                    body = signUpClient
+                }
             }
         }
+        return doCall(callback)
     }
 
 //    suspend fun saveAuto(autosModel: AutosModel): AutosModel {
