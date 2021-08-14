@@ -13,4 +13,9 @@
     <string name="invalid_name">Nombre inválido</string>
     <string name="invalid_city">Ciudad inválida</string>
 
+    <!-- Strings related to shared preferences -->
+    <string name="preference_file_key">restaurant_prefs</string>
+    <string name="saved_remember_user">remember user</string>
+
+
 </resources>

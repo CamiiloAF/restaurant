@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.data.auth.AuthRepository
+import com.camiloagudelo.restaurantws.domain.LoginRequest
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -19,13 +20,13 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
     private val _loginResult = MutableStateFlow<Resource<LoggedInUserView>>(Resource.Empty())
     val loginResult: StateFlow<Resource<LoggedInUserView>> = _loginResult
 
-    fun login(email: String, password: String) {
+    fun login(loginRequest: LoginRequest) {
         if (_loginResult.value is Resource.Loading) {
             return
         }
 
         viewModelScope.launch {
-            authRepository.login(email, password)
+            authRepository.login(loginRequest)
                 .onStart { _loginResult.value = Resource.Loading() }
                 .catch { e -> _loginResult.value = Resource.Error(e) }
                 .collect { response ->

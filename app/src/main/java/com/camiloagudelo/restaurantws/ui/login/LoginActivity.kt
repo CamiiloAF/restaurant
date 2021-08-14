@@ -1,14 +1,16 @@
 package com.camiloagudelo.restaurantws.ui.login
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.databinding.ActivityLoginBinding
+import com.camiloagudelo.restaurantws.domain.LoginRequest
 import com.camiloagudelo.restaurantws.ui.auth.BaseAuthActivity
 import com.camiloagudelo.restaurantws.ui.sign_up.SignUpActivity
 import com.camiloagudelo.restaurantws.utils.afterTextChanged
@@ -23,11 +25,21 @@ class LoginActivity : BaseAuthActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        checkPreferences()
         binding.txtSignUp.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
     }
+
+    private fun checkPreferences() {
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        val loginRequest = LoginRequest.fromJson(
+            sharedPref.getString(getString(R.string.saved_remember_user), null)
+        )
+        if(loginRequest != null) loginViewModel.login(loginRequest)
+    }
+
     override fun initializeBinding() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -39,6 +51,7 @@ class LoginActivity : BaseAuthActivity() {
 
             binding.apply {
                 login.isEnabled = loginState.isDataValid
+                checkBoxRememberMe.isEnabled = loginState.isDataValid
 
                 if (loginState.usernameError != null) {
                     loginEmail.error = getString(loginState.usernameError)
@@ -67,10 +80,23 @@ class LoginActivity : BaseAuthActivity() {
                     }
                     is Resource.Success -> {
                         binding.loading.visibility = View.GONE
+                        saveRememberMePrefs()
                         showActionFailed(it.data!!.toString())
                     }
                 }
             }
+        }
+    }
+
+    private fun saveRememberMePrefs() {
+        val sharedPref = this@LoginActivity.getPreferences(Context.MODE_PRIVATE)
+
+        with(sharedPref.edit()) {
+            putString(
+                getString(R.string.saved_remember_user),
+                buildLoginRequest().toJson()
+            )
+            commit()
         }
     }
 
@@ -94,18 +120,26 @@ class LoginActivity : BaseAuthActivity() {
                     when (actionId) {
                         EditorInfo.IME_ACTION_DONE ->
                             loginViewModel.login(
-                                loginEmail.text.toString(),
-                                password.text.toString()
+                                buildLoginRequest()
                             )
                     }
                     false
                 }
 
                 login.setOnClickListener {
-                    loginViewModel.login(loginEmail.text.toString(), password.text.toString())
+                    loginViewModel.login(buildLoginRequest())
                 }
             }
         }
     }
 
+    private fun buildLoginRequest(): LoginRequest {
+        return with(binding) {
+            LoginRequest(
+                loginEmail.text.toString(),
+                password.text.toString()
+            )
+        }
+
+    }
 }
