@@ -16,7 +16,8 @@ class MyApplication : Application() {
                 listOf(
                     mainModule,
                     authModule,
-                    homeModule
+                    homeModule,
+                    categoryDetailModule,
                 )
             )
         }

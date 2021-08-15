@@ -4,14 +4,16 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.camiloagudelo.restaurantws.data.home.models.Category
 import com.camiloagudelo.restaurantws.databinding.CategoryItemBinding
+import com.camiloagudelo.restaurantws.ui.category_detail.adapter.ProductsRecyclerAdapter
+import com.camiloagudelo.restaurantws.utils.load
 
-class CategoriesRecyclerAdapter(private var items: List<Category>) :
+class CategoriesRecyclerAdapter(
+    private var items: List<Category>,
+    private val onClickCategory: (category: Category) -> Unit,
+) :
     RecyclerView.Adapter<CategoriesRecyclerAdapter.ViewHolder>() {
-
-    lateinit var categoriesRecyclerCallback: CategoriesRecyclerCallback
 
     inner class ViewHolder(private val binding: CategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -20,10 +22,9 @@ class CategoriesRecyclerAdapter(private var items: List<Category>) :
             txtCategory.text = category.nombre
             txtCategoryDescription.text = category.descripcion
 
-            root.setOnClickListener { categoriesRecyclerCallback.onClickCategory(category) }
+            root.setOnClickListener { onClickCategory(category) }
 
-            Glide.with(root).load(category.url_imagen)
-                .into(imgCategory)
+            imgCategory.load(category.url_imagen)
         }
     }
 

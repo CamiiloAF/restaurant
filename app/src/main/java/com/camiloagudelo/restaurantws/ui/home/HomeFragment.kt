@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.data.home.models.Category
 import com.camiloagudelo.restaurantws.databinding.FragmentHomeBinding
+import com.camiloagudelo.restaurantws.ui.category_detail.adapter.ProductsRecyclerAdapter
 import com.camiloagudelo.restaurantws.ui.home.adapter.CategoriesRecyclerAdapter
-import com.camiloagudelo.restaurantws.ui.home.adapter.CategoriesRecyclerCallback
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,14 +26,6 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModel()
 
     lateinit var rcViewAdapter: CategoriesRecyclerAdapter
-
-
-    private val recyclerCallback = object : CategoriesRecyclerCallback {
-        override fun onClickCategory(category: Category) {
-
-        }
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,7 +73,7 @@ class HomeFragment : Fragment() {
                             rcViewCategories.isVisible = true
                         }
 
-                            rcViewAdapter.setItems(it.data ?: arrayListOf())
+                        rcViewAdapter.setItems(it.data ?: arrayListOf())
                     }
                 }
             }
@@ -88,8 +81,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpRcView() {
-        rcViewAdapter = CategoriesRecyclerAdapter(listOf())
-        rcViewAdapter.categoriesRecyclerCallback = recyclerCallback
+        rcViewAdapter = CategoriesRecyclerAdapter(listOf(), ::goToDetail)
 
         with(binding) {
             rcViewCategories.apply {
@@ -98,6 +90,11 @@ class HomeFragment : Fragment() {
                 setHasFixedSize(true)
             }
         }
+    }
+
+    private fun goToDetail(category: Category) {
+        val action = HomeFragmentDirections.actionFirstFragmentToCategoryDetailFragment(category)
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

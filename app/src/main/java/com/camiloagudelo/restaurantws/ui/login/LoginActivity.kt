@@ -78,7 +78,7 @@ class LoginActivity : BaseAuthActivity() {
                     }
                     is Resource.Success -> {
                         binding.loading.visibility = View.GONE
-                        saveRememberMePrefs()
+                        saveRememberMePrefs(it.data!!.second)
                         goToHome()
                     }
                 }
@@ -90,13 +90,13 @@ class LoginActivity : BaseAuthActivity() {
         goToActivity<MainActivity>()
     }
 
-    private fun saveRememberMePrefs() {
+    private fun saveRememberMePrefs(loginRequest: LoginRequest) {
         val sharedPref = this@LoginActivity.getPreferences(Context.MODE_PRIVATE)
 
         with(sharedPref.edit()) {
             putString(
                 getString(R.string.saved_remember_user),
-                buildLoginRequest().toJson()
+                loginRequest.toJson()
             )
             commit()
         }

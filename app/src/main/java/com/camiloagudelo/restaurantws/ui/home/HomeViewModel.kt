@@ -13,6 +13,7 @@ class HomeViewModel(private val homeRepository: HomeRepository) : ViewModel() {
     val categoriesResult: StateFlow<Resource<List<Category>>> = _categoriesResult
 
     fun getCategories() {
+        if(_categoriesResult.value is Resource.Success) return
         viewModelScope.launch {
             homeRepository.getCategories()
                 .onStart { _categoriesResult.value = Resource.Loading() }
