@@ -1,8 +1,7 @@
 package com.camiloagudelo.restaurantws
 
 import android.app.Application
-import com.camiloagudelo.restaurantws.core.di.authModule
-import com.camiloagudelo.restaurantws.core.di.mainModule
+import com.camiloagudelo.restaurantws.core.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,6 +16,7 @@ class MyApplication : Application() {
                 listOf(
                     mainModule,
                     authModule,
+                    homeModule
                 )
             )
         }

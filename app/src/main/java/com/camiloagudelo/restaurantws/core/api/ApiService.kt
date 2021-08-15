@@ -24,6 +24,7 @@ package com.camiloagudelo.restaurantws.core.api
 import com.camiloagudelo.restaurantws.core.models.ApiResponse
 import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
+import com.camiloagudelo.restaurantws.data.home.models.CategoriesResponse
 import com.google.gson.Gson
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -56,7 +57,7 @@ class ApiService {
         }
     }
 
-    private suspend inline fun <reified T>doCall(apiServiceCallback: ApiServiceCallback): T {
+    private suspend inline fun <reified T> doCall(apiServiceCallback: ApiServiceCallback): T {
         try {
             val response = apiServiceCallback.execute()
             val json = String(response.readBytes())
@@ -66,7 +67,7 @@ class ApiService {
                 throw Exception(apiResponse.mensaje)
             }
 
-           return Gson().fromJson(json, T::class.java)
+            return Gson().fromJson(json, T::class.java)
         } catch (e: ClientRequestException) {
             throw Exception(e.response.status.description)
         } catch (e: Exception) {
@@ -96,6 +97,13 @@ class ApiService {
                     body = signUpClient
                 }
             }
+        }
+        return doCall(callback)
+    }
+
+    suspend fun getCategories(): CategoriesResponse {
+        val callback = object : ApiServiceCallback {
+            override suspend fun execute(): HttpResponse = client.get(path = "categorias")
         }
         return doCall(callback)
     }

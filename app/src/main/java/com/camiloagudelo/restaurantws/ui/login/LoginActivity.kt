@@ -1,7 +1,6 @@
 package com.camiloagudelo.restaurantws.ui.login
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -11,9 +10,11 @@ import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.databinding.ActivityLoginBinding
 import com.camiloagudelo.restaurantws.domain.LoginRequest
+import com.camiloagudelo.restaurantws.ui.MainActivity
 import com.camiloagudelo.restaurantws.ui.auth.BaseAuthActivity
 import com.camiloagudelo.restaurantws.ui.sign_up.SignUpActivity
 import com.camiloagudelo.restaurantws.utils.afterTextChanged
+import com.camiloagudelo.restaurantws.utils.goToActivity
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,10 +27,7 @@ class LoginActivity : BaseAuthActivity() {
         super.onCreate(savedInstanceState)
 
         checkPreferences()
-        binding.txtSignUp.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
-        }
+        binding.txtSignUp.setOnClickListener { goToActivity<SignUpActivity>() }
     }
 
     private fun checkPreferences() {
@@ -37,7 +35,7 @@ class LoginActivity : BaseAuthActivity() {
         val loginRequest = LoginRequest.fromJson(
             sharedPref.getString(getString(R.string.saved_remember_user), null)
         )
-        if(loginRequest != null) loginViewModel.login(loginRequest)
+        if (loginRequest != null) loginViewModel.login(loginRequest)
     }
 
     override fun initializeBinding() {
@@ -81,11 +79,15 @@ class LoginActivity : BaseAuthActivity() {
                     is Resource.Success -> {
                         binding.loading.visibility = View.GONE
                         saveRememberMePrefs()
-                        showActionFailed(it.data!!.toString())
+                        goToHome()
                     }
                 }
             }
         }
+    }
+
+    private fun goToHome() {
+        goToActivity<MainActivity>()
     }
 
     private fun saveRememberMePrefs() {
