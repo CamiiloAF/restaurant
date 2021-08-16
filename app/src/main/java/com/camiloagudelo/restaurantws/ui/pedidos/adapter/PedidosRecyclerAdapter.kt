@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
+import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
 import com.camiloagudelo.restaurantws.databinding.PedidoItemBinding
 import kotlinx.coroutines.runBlocking
@@ -12,7 +14,6 @@ import kotlinx.coroutines.runBlocking
 class PedidosRecyclerAdapter(
     private var items: MutableList<Pedido>,
     private val pedidosRecyclerCallback: PedidosRecyclerCallback,
-    private val currentUserName: String,
 ) :
     RecyclerView.Adapter<PedidosRecyclerAdapter.ViewHolder>() {
 
@@ -35,7 +36,7 @@ class PedidosRecyclerAdapter(
 
             txtPedidoDate.text = pedido.created_at.toString()
             txtTotal.text = pedido.total.toString()
-            txtClientName.text = currentUserName
+            txtClientName.text = CurrentUser.nombre
             txtNumberOfPedido.text = pedido.id.toString()
         }
     }

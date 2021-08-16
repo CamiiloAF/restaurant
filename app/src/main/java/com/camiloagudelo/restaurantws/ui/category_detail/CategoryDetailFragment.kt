@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.data.products.models.Product
 import com.camiloagudelo.restaurantws.databinding.CategoryDetailFragmentBinding
+import com.camiloagudelo.restaurantws.ui.MainViewModel
 import com.camiloagudelo.restaurantws.ui.category_detail.adapter.ProductsRecyclerAdapter
 import com.camiloagudelo.restaurantws.ui.category_detail.adapter.ProductsRecyclerCallback
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collect
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -24,6 +27,7 @@ class CategoryDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val categoryDetailViewModel: CategoryDetailViewModel by viewModel()
+    private val mainViewModel: MainViewModel by sharedViewModel()
 
     private lateinit var rcViewAdapter: ProductsRecyclerAdapter
 
@@ -32,16 +36,44 @@ class CategoryDetailFragment : Fragment() {
     private val productsRecyclerCallback = object : ProductsRecyclerCallback {
         override fun onAddToCar(item: Product, position: Int) {
             item.quantity++
-            rcViewAdapter.updateItem(item, position)
+            mainViewModel.insertOrUpdatePedidoWithProduct(item)
+            observePedido(item, position)
         }
 
         override fun onRemoveFromCar(item: Product, position: Int) {
+            if(item.quantity == 0) return
+
             item.quantity--
-            rcViewAdapter.updateItem(item, position)
+            mainViewModel.insertOrUpdatePedidoWithProduct(item)
+            observePedido(item, position)
         }
 
         override fun onClickItem(item: Product) {
         }
+
+        private fun observePedido(
+            item: Product,
+            position: Int,
+        ) {
+            lifecycleScope.launchWhenStarted {
+                mainViewModel.insertPedidoResult.collect {
+                    when (it) {
+                        is Resource.Empty -> {
+                        }
+                        is Resource.Error -> {
+                        }
+                        is Resource.Loading -> {
+                        }
+                        is Resource.Success -> {
+                            rcViewAdapter.updateItem(item, position)
+                            this.cancel()
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 
     override fun onCreateView(
@@ -58,11 +90,12 @@ class CategoryDetailFragment : Fragment() {
         setUpRcView()
         setHeaderTexts()
         categoryDetailViewModel.getProductsByCategory(args.category.id)
-        handleCategoriesResponse()
+        handleProductsResponse()
     }
 
     private fun setUpRcView() {
-        rcViewAdapter = ProductsRecyclerAdapter(mutableListOf(), productsRecyclerCallback)
+        rcViewAdapter = ProductsRecyclerAdapter(mutableListOf(),
+            productsRecyclerCallback)
 
         binding.rcViewProducts.apply {
             adapter = rcViewAdapter
@@ -77,7 +110,7 @@ class CategoryDetailFragment : Fragment() {
         }
     }
 
-    private fun handleCategoriesResponse() {
+    private fun handleProductsResponse() {
         lifecycleScope.launchWhenStarted {
             categoryDetailViewModel.productsResult.collect {
                 when (it) {

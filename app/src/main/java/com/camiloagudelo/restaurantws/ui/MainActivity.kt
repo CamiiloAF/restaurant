@@ -15,15 +15,19 @@ import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.databinding.ActivityMainBinding
 import com.camiloagudelo.restaurantws.ui.login.LoginActivity
 import com.camiloagudelo.restaurantws.utils.goToActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mainViewModel.getPedido()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,14 +51,18 @@ class MainActivity : AppCompatActivity() {
             findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.action_global_pedidosFragment)
             return true
         } else if (id == R.id.action_logout) {
-           getSharedPreferences("x", Context.MODE_PRIVATE)
-                .edit(action = SharedPreferences.Editor::clear)
-
-            goToActivity<LoginActivity>()
-            finish()
-            return true
+            return logout()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun logout(): Boolean {
+        getSharedPreferences("x", MODE_PRIVATE)
+            .edit(action = SharedPreferences.Editor::clear)
+
+        goToActivity<LoginActivity>()
+        finish()
+        return true
     }
 
     override fun onSupportNavigateUp(): Boolean {

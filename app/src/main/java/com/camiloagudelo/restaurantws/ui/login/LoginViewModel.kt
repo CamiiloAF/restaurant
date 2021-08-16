@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.data.auth.AuthRepository
+import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
+import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.domain.LoginRequest
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -31,12 +33,18 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
                 .onStart { _loginResult.value = Resource.Loading() }
                 .catch { e -> _loginResult.value = Resource.Error(e) }
                 .collect { response ->
+                    setLoggedInUser(response)
+
                     _loginResult.value =
-                        Resource.Success(CurrentUser(token = response?.token!!,
-                            clientID = response.idCliente,
-                            nombre = response.nombre) to loginRequest)
+                        Resource.Success(CurrentUser to loginRequest)
                 }
         }
+    }
+
+    private fun setLoggedInUser(response: LoggedInUser?) {
+        CurrentUser.idCliente = response!!.idCliente
+        CurrentUser.nombre = response.nombre
+        CurrentUser.token = response.token
     }
 
     fun loginDataChanged(username: String, password: String) {

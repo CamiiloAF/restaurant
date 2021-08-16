@@ -9,8 +9,14 @@ interface PedidosDao {
     @Query("SELECT * FROM pedidos")
     fun getAll(): Flow<List<Pedido>>
 
+    @Query("SELECT * FROM pedidos LIMIT 1")
+    fun getOne(): Flow<Pedido?>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(pedido: Pedido)
+    suspend fun insert(pedido: Pedido): Long
+
+    @Update
+    suspend fun update(pedido: Pedido): Int
 
     @Delete
     suspend fun delete(pedido: Pedido)

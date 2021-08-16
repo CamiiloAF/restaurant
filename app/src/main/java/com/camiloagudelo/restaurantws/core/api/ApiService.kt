@@ -22,6 +22,7 @@ package com.camiloagudelo.restaurantws.core.api
 
 
 import com.camiloagudelo.restaurantws.core.models.ApiResponse
+import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
 import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.auth.models.PrivacyPoliciesResponse
 import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
@@ -29,7 +30,6 @@ import com.camiloagudelo.restaurantws.data.home.models.CategoriesResponse
 import com.camiloagudelo.restaurantws.data.pedidos.models.PedidosResponse
 import com.camiloagudelo.restaurantws.data.products.models.ProductsResponse
 import com.camiloagudelo.restaurantws.data.specialty.models.SpecialityResponse
-import com.camiloagudelo.restaurantws.ui.login.CurrentUser
 import com.google.gson.Gson
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -134,7 +134,7 @@ class ApiService {
         val callback = object : ApiServiceCallback {
             override suspend fun execute(): HttpResponse =
                 client.get(path = "pedidos") {
-                    parameter("cliente", currentUser.clientID)
+                    parameter("cliente", currentUser.idCliente)
                     parameter("token", currentUser.token)
                 }
         }

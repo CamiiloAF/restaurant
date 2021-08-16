@@ -81,7 +81,6 @@ class LoginActivity : BaseAuthActivity() {
                     }
                     is Resource.Success -> with(binding) {
                         saveRememberMePrefs(it.data!!.second)
-                        saveCurrentUserPrefs(it.data.first)
                         loading.visibility = View.GONE
                         body.root.visibility = View.VISIBLE
                         goToSpecialityActivity()
@@ -99,18 +98,6 @@ class LoginActivity : BaseAuthActivity() {
             putString(
                 getString(R.string.saved_remember_user),
                 loginRequest.toJson()
-            )
-            commit()
-        }
-    }
-
-    private fun saveCurrentUserPrefs(currentUser: CurrentUser) {
-        val sharedPref = this@LoginActivity.getSharedPreferences("x", Context.MODE_PRIVATE)
-
-        with(sharedPref.edit()) {
-            putString(
-                getString(R.string.saved_current_user),
-                currentUser.toJson()
             )
             commit()
         }

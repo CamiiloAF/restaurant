@@ -2,12 +2,12 @@ package com.camiloagudelo.restaurantws.core.di
 
 import com.camiloagudelo.restaurantws.core.api.ApiService
 import com.camiloagudelo.restaurantws.core.database.RestaurantWSDatabase
-import com.camiloagudelo.restaurantws.core.use_cases.GetCurrentUserUseCase
 import com.camiloagudelo.restaurantws.data.auth.AuthRepository
 import com.camiloagudelo.restaurantws.data.home.repositories.HomeRepository
 import com.camiloagudelo.restaurantws.data.pedidos.PedidosRepository
 import com.camiloagudelo.restaurantws.data.products.ProductRepository
 import com.camiloagudelo.restaurantws.data.specialty.SpecialityRepository
+import com.camiloagudelo.restaurantws.ui.MainViewModel
 import com.camiloagudelo.restaurantws.ui.category_detail.CategoryDetailViewModel
 import com.camiloagudelo.restaurantws.ui.home.HomeViewModel
 import com.camiloagudelo.restaurantws.ui.login.LoginViewModel
@@ -17,10 +17,13 @@ import com.camiloagudelo.restaurantws.ui.specialty.SpecialtyViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val mainModule = module {
+val coreModule = module {
     single { ApiService() }
     single { RestaurantWSDatabase.getDatabase(get()) }
-    single { GetCurrentUserUseCase() }
+}
+
+val mainModule = module {
+    viewModel { MainViewModel(get()) }
 }
 
 val authModule = module {
@@ -43,7 +46,7 @@ val homeModule = module {
 }
 
 val categoryDetailModule = module {
-    single { ProductRepository(get()) }
+    single { ProductRepository(get(),get<RestaurantWSDatabase>().pedidosDao()) }
 
     viewModel { CategoryDetailViewModel(get()) }
 }

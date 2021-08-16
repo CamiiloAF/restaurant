@@ -3,9 +3,10 @@ package com.camiloagudelo.restaurantws.ui.pedidos
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camiloagudelo.restaurantws.core.api.Resource
+import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
+import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.pedidos.PedidosRepository
 import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
-import com.camiloagudelo.restaurantws.ui.login.CurrentUser
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 

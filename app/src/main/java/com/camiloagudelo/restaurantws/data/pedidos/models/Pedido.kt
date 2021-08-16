@@ -11,7 +11,7 @@ import java.util.*
 data class Pedido(
     @PrimaryKey(autoGenerate = true)
     @Expose(serialize = false)
-    val id: Int,
+    var id: Int?,
     val id_cliente: Int,
     val json_pedido: String,
     val total: Int,
@@ -19,4 +19,6 @@ data class Pedido(
     val created_at: Date,
     @Expose(serialize = false)
     val canDelete: Boolean = false,
+    @Expose(serialize = false)
+    val products: List<Product>,
 )

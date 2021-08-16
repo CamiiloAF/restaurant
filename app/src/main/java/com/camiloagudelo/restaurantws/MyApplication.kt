@@ -14,9 +14,10 @@ class MyApplication : Application() {
             androidContext(this@MyApplication)
             modules(
                 listOf(
-                    mainModule,
+                    coreModule,
                     specialityModule,
                     authModule,
+                    mainModule,
                     homeModule,
                     categoryDetailModule,
                     pedidosModule,

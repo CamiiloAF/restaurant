@@ -19,7 +19,7 @@ class CategoryDetailViewModel(private val productRepository: ProductRepository) 
                 .catch { e -> _productsResult.value = Resource.Error(e) }
                 .collect { response ->
                     _productsResult.value =
-                        Resource.Success(response.productos)
+                        Resource.Success(response)
                 }
         }
     }

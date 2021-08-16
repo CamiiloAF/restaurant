@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
 import com.camiloagudelo.restaurantws.data.products.models.Product
 import com.camiloagudelo.restaurantws.databinding.ProductItemBinding
 import com.camiloagudelo.restaurantws.utils.load

@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.camiloagudelo.restaurantws.core.api.Resource
-import com.camiloagudelo.restaurantws.core.use_cases.GetCurrentUserUseCase
+import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
+import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
 import com.camiloagudelo.restaurantws.databinding.PedidosFragmentBinding
-import com.camiloagudelo.restaurantws.ui.login.CurrentUser
 import com.camiloagudelo.restaurantws.ui.pedidos.adapter.PedidosRecyclerAdapter
 import com.camiloagudelo.restaurantws.ui.pedidos.adapter.PedidosRecyclerCallback
 import kotlinx.coroutines.flow.collect
@@ -27,7 +27,6 @@ class PedidosFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val pedidosViewModel: PedidosViewModel by viewModel()
-    private val getCurrentUserUseCase by inject<GetCurrentUserUseCase>()
 
     private lateinit var rcViewAdapter: PedidosRecyclerAdapter
 
@@ -68,23 +67,16 @@ class PedidosFragment : Fragment() {
         return binding.root
     }
 
-    private fun getCurrentUser(): CurrentUser {
-        val sharedPref = activity?.getSharedPreferences("x", Context.MODE_PRIVATE)
-        return getCurrentUserUseCase(sharedPref!!)!!
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setUpRcView()
-        pedidosViewModel.getPedidos(getCurrentUser())
+        pedidosViewModel.getPedidos(CurrentUser)
         handleCategoriesResponse()
     }
 
     private fun setUpRcView() {
-        rcViewAdapter = PedidosRecyclerAdapter(mutableListOf(),
-            pedidosRecyclerCallback,
-            getCurrentUser().nombre)
+        rcViewAdapter = PedidosRecyclerAdapter(mutableListOf(), pedidosRecyclerCallback)
 
         binding.rcViewPedidos.apply {
             adapter = rcViewAdapter
