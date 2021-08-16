@@ -27,7 +27,7 @@ class LoginActivity : BaseAuthActivity() {
         super.onCreate(savedInstanceState)
 
         checkPreferences()
-        binding.txtSignUp.setOnClickListener { goToActivity<SignUpActivity>() }
+        binding.body.txtSignUp.setOnClickListener { goToActivity<SignUpActivity>() }
     }
 
     private fun checkPreferences() {
@@ -47,7 +47,7 @@ class LoginActivity : BaseAuthActivity() {
         loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
-            binding.apply {
+            binding.body.apply {
                 login.isEnabled = loginState.isDataValid
                 checkBoxRememberMe.isEnabled = loginState.isDataValid
 
@@ -69,17 +69,20 @@ class LoginActivity : BaseAuthActivity() {
                     is Resource.Empty -> {
 
                     }
-                    is Resource.Error -> {
+                    is Resource.Error -> with(binding) {
                         showActionFailed(it.error?.message ?: "Error inesperado")
-                        binding.loading.visibility = View.GONE
+                        loading.visibility = View.GONE
+                        body.root.visibility = View.VISIBLE
                     }
-                    is Resource.Loading -> {
-                        binding.loading.visibility = View.VISIBLE
+                    is Resource.Loading -> with(binding) {
+                        loading.visibility = View.VISIBLE
+                        body.root.visibility = View.GONE
                     }
-                    is Resource.Success -> {
-                        binding.loading.visibility = View.GONE
+                    is Resource.Success -> with(binding) {
                         saveRememberMePrefs(it.data!!.second)
                         saveCurrentUserPrefs(it.data.first)
+                        loading.visibility = View.GONE
+                        body.root.visibility = View.VISIBLE
                         goToHome()
                     }
                 }
@@ -101,7 +104,7 @@ class LoginActivity : BaseAuthActivity() {
     }
 
     private fun saveCurrentUserPrefs(currentUser: CurrentUser) {
-        val sharedPref = this@LoginActivity.getSharedPreferences("x",Context.MODE_PRIVATE)
+        val sharedPref = this@LoginActivity.getSharedPreferences("x", Context.MODE_PRIVATE)
 
         with(sharedPref.edit()) {
             putString(
@@ -117,7 +120,8 @@ class LoginActivity : BaseAuthActivity() {
     }
 
     override fun setUpInputsValidations() {
-        binding.apply {
+        binding.body
+            .apply {
             loginEmail.afterTextChanged {
                 loginViewModel.loginDataChanged(
                     loginEmail.text.toString(),
@@ -150,7 +154,7 @@ class LoginActivity : BaseAuthActivity() {
     }
 
     private fun buildLoginRequest(): LoginRequest {
-        return with(binding) {
+        return with(binding.body) {
             LoginRequest(
                 loginEmail.text.toString(),
                 password.text.toString()
