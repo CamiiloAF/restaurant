@@ -9,6 +9,7 @@ import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.core.models.ApiResponse
 import com.camiloagudelo.restaurantws.data.auth.AuthRepository
+import com.camiloagudelo.restaurantws.data.auth.models.Policies
 import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -19,6 +20,9 @@ class SignUpViewModel(private val authRepository: AuthRepository) : ViewModel() 
 
     private val _signUpResult = MutableStateFlow<Resource<ApiResponse>>(Resource.Empty())
     val signUpResult: StateFlow<Resource<ApiResponse>> = _signUpResult
+
+    private val _privacyPoliciesResult = MutableStateFlow<Resource<Policies>>(Resource.Empty())
+    val privacyPoliciesResult: StateFlow<Resource<Policies>> = _privacyPoliciesResult
 
     fun signUpClient(signUpClient: SignUpClient) {
         if (signUpResult.value is Resource.Loading) {
@@ -35,7 +39,18 @@ class SignUpViewModel(private val authRepository: AuthRepository) : ViewModel() 
         }
     }
 
-    fun loginDataChanged(signUpClient: SignUpClient) {
+    fun getPrivacyPolicies() {
+        viewModelScope.launch {
+            authRepository.getPrivacyPolicies()
+                .onStart { _privacyPoliciesResult.value = Resource.Loading() }
+                .catch { e -> _privacyPoliciesResult.value = Resource.Error(e) }
+                .collect { response ->
+                    _privacyPoliciesResult.value = Resource.Success(response)
+                }
+        }
+    }
+
+    fun signUpDataChanged(signUpClient: SignUpClient) {
         var haveError = false
 
         if (!isEmailValid(signUpClient.correo)) {

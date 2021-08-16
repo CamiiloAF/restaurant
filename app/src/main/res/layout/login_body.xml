@@ -13,10 +13,12 @@
         android:layout_marginEnd="24dp"
         android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
+        android:minHeight="48dp"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/password"
@@ -29,6 +31,7 @@
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
+        android:minHeight="48dp"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,22 +47,25 @@
         android:layout_marginBottom="64dp"
         android:enabled="false"
         android:text="@string/action_log_in"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSignUp"
+        app:layout_constraintTop_toBottomOf="@+id/btnGoToSignUp"
         app:layout_constraintVertical_bias="0.1" />
 
-    <TextView
-        android:id="@+id/txtSignUp"
+    <Button
+        android:id="@+id/btnGoToSignUp"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:clickable="true"
+        android:focusable="true"
         android:text="Registrarse"
+        android:textColor="#DD2C00"
         app:layout_constraintEnd_toEndOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password"
-        android:focusable="true" />
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
     <CheckBox
         android:id="@+id/checkBoxRememberMe"

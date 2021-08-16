@@ -3,6 +3,7 @@ package com.camiloagudelo.restaurantws.data.auth
 import com.camiloagudelo.restaurantws.core.api.ApiService
 import com.camiloagudelo.restaurantws.core.models.ApiResponse
 import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
+import com.camiloagudelo.restaurantws.data.auth.models.Policies
 import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
 import com.camiloagudelo.restaurantws.domain.LoginRequest
 import kotlinx.coroutines.Dispatchers
@@ -17,5 +18,9 @@ class AuthRepository(private val apiService: ApiService) {
 
     suspend fun signUpClient(signUpClient: SignUpClient): Flow<ApiResponse> = flow {
         emit(apiService.signUpClient(signUpClient))
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun getPrivacyPolicies(): Flow<Policies> = flow {
+        emit(apiService.getPrivacyPolicies().policies)
     }.flowOn(Dispatchers.IO)
 }

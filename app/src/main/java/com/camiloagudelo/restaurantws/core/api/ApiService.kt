@@ -23,6 +23,7 @@ package com.camiloagudelo.restaurantws.core.api
 
 import com.camiloagudelo.restaurantws.core.models.ApiResponse
 import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
+import com.camiloagudelo.restaurantws.data.auth.models.PrivacyPoliciesResponse
 import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
 import com.camiloagudelo.restaurantws.data.home.models.CategoriesResponse
 import com.camiloagudelo.restaurantws.data.pedidos.models.PedidosResponse
@@ -90,6 +91,15 @@ class ApiService {
                 }
             }
 
+        }
+        return doCall(callback)
+    }
+
+    suspend fun getPrivacyPolicies(): PrivacyPoliciesResponse {
+        val callback = object : ApiServiceCallback {
+            override suspend fun execute(): HttpResponse {
+                return client.get(path = "politicas?ver")
+            }
         }
         return doCall(callback)
     }

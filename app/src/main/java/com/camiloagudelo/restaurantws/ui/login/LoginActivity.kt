@@ -28,7 +28,7 @@ class LoginActivity : BaseAuthActivity() {
         super.onCreate(savedInstanceState)
 
         checkPreferences()
-        binding.body.txtSignUp.setOnClickListener { goToActivity<SignUpActivity>() }
+        binding.body.btnGoToSignUp.setOnClickListener { goToActivity<SignUpActivity>() }
     }
 
     private fun checkPreferences() {

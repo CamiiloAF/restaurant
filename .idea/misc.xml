@@ -9,6 +9,7 @@
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/drawable/rounded_corner.xml" value="0.21666666666666667" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/activity_sign_up.xml" value="0.19166666666666668" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/activity_splash_screen.xml" value="0.16979166666666667" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/category_detail_fragment.xml" value="0.264" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/category_item.xml" value="0.264" />
@@ -16,7 +17,7 @@
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/content_main.xml" value="0.176" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/fragment_first.xml" value="0.19166666666666668" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/fragment_home.xml" value="0.19166666666666668" />
-        <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/login_body.xml" value="0.16979166666666667" />
+        <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/login_body.xml" value="0.264" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/pedido_item.xml" value="0.264" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/pedidos_fragment.xml" value="0.2" />
         <entry key="..\:/Proyectos-android/RestaurantWS/app/src/main/res/layout/product_item.xml" value="0.4" />
