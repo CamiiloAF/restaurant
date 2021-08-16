@@ -11,4 +11,11 @@
         android:icon="@drawable/ic_baseline_shopping_cart_24"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="300"
+        android:title=""
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:showAsAction="ifRoom" />
+
 </menu>

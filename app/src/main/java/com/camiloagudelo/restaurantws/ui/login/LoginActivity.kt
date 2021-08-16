@@ -32,7 +32,7 @@ class LoginActivity : BaseAuthActivity() {
     }
 
     private fun checkPreferences() {
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("x",Context.MODE_PRIVATE)
         val loginRequest = LoginRequest.fromJson(
             sharedPref.getString(getString(R.string.saved_remember_user), null)
         )
@@ -93,7 +93,7 @@ class LoginActivity : BaseAuthActivity() {
 
 
     private fun saveRememberMePrefs(loginRequest: LoginRequest) {
-        val sharedPref = this@LoginActivity.getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = this@LoginActivity.getSharedPreferences("x",Context.MODE_PRIVATE)
 
         with(sharedPref.edit()) {
             putString(
