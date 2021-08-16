@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.camiloagudelo.restaurantws.data.home.models.Category
 import com.camiloagudelo.restaurantws.databinding.CategoryItemBinding
-import com.camiloagudelo.restaurantws.ui.category_detail.adapter.ProductsRecyclerAdapter
 import com.camiloagudelo.restaurantws.utils.load
 
 class CategoriesRecyclerAdapter(

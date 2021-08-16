@@ -23,4 +23,9 @@
             android:name="category"
             app:argType="com.camiloagudelo.restaurantws.data.home.models.Category" />
     </fragment>
+    <fragment
+        android:id="@+id/pedidosFragment"
+        android:name="com.camiloagudelo.restaurantws.ui.pedidos.PedidosFragment"
+        android:label="pedidos_fragment"
+        tools:layout="@layout/pedidos_fragment" /><action android:id="@+id/action_global_pedidosFragment" app:destination="@id/pedidosFragment"/>
 </navigation>

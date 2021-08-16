@@ -79,6 +79,7 @@ class LoginActivity : BaseAuthActivity() {
                     is Resource.Success -> {
                         binding.loading.visibility = View.GONE
                         saveRememberMePrefs(it.data!!.second)
+                        saveCurrentUserPrefs(it.data.first)
                         goToHome()
                     }
                 }
@@ -86,9 +87,6 @@ class LoginActivity : BaseAuthActivity() {
         }
     }
 
-    private fun goToHome() {
-        goToActivity<MainActivity>()
-    }
 
     private fun saveRememberMePrefs(loginRequest: LoginRequest) {
         val sharedPref = this@LoginActivity.getPreferences(Context.MODE_PRIVATE)
@@ -100,6 +98,22 @@ class LoginActivity : BaseAuthActivity() {
             )
             commit()
         }
+    }
+
+    private fun saveCurrentUserPrefs(currentUser: CurrentUser) {
+        val sharedPref = this@LoginActivity.getSharedPreferences("x",Context.MODE_PRIVATE)
+
+        with(sharedPref.edit()) {
+            putString(
+                getString(R.string.saved_current_user),
+                currentUser.toJson()
+            )
+            commit()
+        }
+    }
+
+    private fun goToHome() {
+        goToActivity<MainActivity>()
     }
 
     override fun setUpInputsValidations() {

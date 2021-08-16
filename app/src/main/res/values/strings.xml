@@ -15,8 +15,9 @@
 
     <!-- Strings related to shared preferences -->
     <string name="preference_file_key">restaurant_prefs</string>
-    <string name="saved_remember_user">remember user</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="saved_remember_user">remember_user</string>
+    <string name="saved_current_user">current_user</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -28,5 +29,5 @@
     <string name="categories">Categorías</string>
     <string name="home_header_desc">¿Qué vas a comer hoy?</string>
 
-
+    <string name="title_activity_main">MainActivity</string>
 </resources>

@@ -25,7 +25,9 @@ import com.camiloagudelo.restaurantws.core.models.ApiResponse
 import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
 import com.camiloagudelo.restaurantws.data.home.models.CategoriesResponse
+import com.camiloagudelo.restaurantws.data.pedidos.models.PedidosResponse
 import com.camiloagudelo.restaurantws.data.products.models.ProductsResponse
+import com.camiloagudelo.restaurantws.ui.login.CurrentUser
 import com.google.gson.Gson
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -117,29 +119,15 @@ class ApiService {
         return doCall(callback)
     }
 
-//    suspend fun saveAuto(autosModel: AutosModel): AutosModel {
-//        client.post<HttpResponse>("https://crudcrud.com/api/dd89d34f868344cf8140f5a8e166fc3b/autos") {
-//            body = autosModel
-//            header(HttpHeaders.Accept, ContentType.Application.Json)
-//            contentType(ContentType.Application.Json)
-//        }
-//
-//        return autosModel
-//
-//    }
+    suspend fun getPedidosByClient(currentUser: CurrentUser): PedidosResponse {
+        val callback = object : ApiServiceCallback {
+            override suspend fun execute(): HttpResponse =
+                client.get(path = "pedidos") {
+                    parameter("cliente", currentUser.clientID)
+                    parameter("token", currentUser.token)
+                }
+        }
+        return doCall(callback)
+    }
 
-//    suspend fun updateAuto(autosModel: AutosModel): AutosModel {
-//        client.put<HttpResponse>("https://crudcrud.com/api/dd89d34f868344cf8140f5a8e166fc3b/autos/${autosModel.id}") {
-//            body = autosModel
-//            header(HttpHeaders.Accept, ContentType.Application.Json)
-////            header(HttpHeaders.Allow, AlloM)
-//            contentType(ContentType.Application.Json)
-//        }
-//        return autosModel
-//    }
-
-//    suspend fun deleteAuto(autoId: String): String {
-//        client.delete<HttpResponse>("https://crudcrud.com/api/dd89d34f868344cf8140f5a8e166fc3b/autos/$autoId")
-//        return autoId
-//    }
 }

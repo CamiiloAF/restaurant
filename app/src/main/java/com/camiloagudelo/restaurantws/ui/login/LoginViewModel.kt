@@ -18,8 +18,8 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
     private val _loginResult =
-        MutableStateFlow<Resource<Pair<LoggedInUserView, LoginRequest>>>(Resource.Empty())
-    val loginResult: StateFlow<Resource<Pair<LoggedInUserView, LoginRequest>>> = _loginResult
+        MutableStateFlow<Resource<Pair<CurrentUser, LoginRequest>>>(Resource.Empty())
+    val loginResult: StateFlow<Resource<Pair<CurrentUser, LoginRequest>>> = _loginResult
 
     fun login(loginRequest: LoginRequest) {
         if (_loginResult.value is Resource.Loading) {
@@ -32,8 +32,9 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
                 .catch { e -> _loginResult.value = Resource.Error(e) }
                 .collect { response ->
                     _loginResult.value =
-                        Resource.Success(LoggedInUserView(displayName = response?.nombre
-                            ?: "No name") to loginRequest)
+                        Resource.Success(CurrentUser(token = response?.token!!,
+                            clientID = response.idCliente,
+                            nombre = response.nombre) to loginRequest)
                 }
         }
     }

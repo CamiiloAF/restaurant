@@ -18,6 +18,7 @@ class MyApplication : Application() {
                     authModule,
                     homeModule,
                     categoryDetailModule,
+                    pedidosModule,
                 )
             )
         }

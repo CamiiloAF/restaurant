@@ -13,7 +13,6 @@ import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.data.home.models.Category
 import com.camiloagudelo.restaurantws.databinding.FragmentHomeBinding
-import com.camiloagudelo.restaurantws.ui.category_detail.adapter.ProductsRecyclerAdapter
 import com.camiloagudelo.restaurantws.ui.home.adapter.CategoriesRecyclerAdapter
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
