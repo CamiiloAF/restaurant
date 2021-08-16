@@ -27,6 +27,7 @@ import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
 import com.camiloagudelo.restaurantws.data.home.models.CategoriesResponse
 import com.camiloagudelo.restaurantws.data.pedidos.models.PedidosResponse
 import com.camiloagudelo.restaurantws.data.products.models.ProductsResponse
+import com.camiloagudelo.restaurantws.data.specialty.models.SpecialityResponse
 import com.camiloagudelo.restaurantws.ui.login.CurrentUser
 import com.google.gson.Gson
 import io.ktor.client.*
@@ -126,6 +127,15 @@ class ApiService {
                     parameter("cliente", currentUser.clientID)
                     parameter("token", currentUser.token)
                 }
+        }
+        return doCall(callback)
+    }
+
+    suspend fun getSpeciality(): SpecialityResponse {
+        val callback = object : ApiServiceCallback {
+            override suspend fun execute(): HttpResponse {
+                return client.get(path = "especialidad")
+            }
         }
         return doCall(callback)
     }

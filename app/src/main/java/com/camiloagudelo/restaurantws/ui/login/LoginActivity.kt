@@ -13,6 +13,7 @@ import com.camiloagudelo.restaurantws.domain.LoginRequest
 import com.camiloagudelo.restaurantws.ui.MainActivity
 import com.camiloagudelo.restaurantws.ui.auth.BaseAuthActivity
 import com.camiloagudelo.restaurantws.ui.sign_up.SignUpActivity
+import com.camiloagudelo.restaurantws.ui.specialty.SpecialtyActivity
 import com.camiloagudelo.restaurantws.utils.afterTextChanged
 import com.camiloagudelo.restaurantws.utils.goToActivity
 import kotlinx.coroutines.flow.collect
@@ -83,7 +84,7 @@ class LoginActivity : BaseAuthActivity() {
                         saveCurrentUserPrefs(it.data.first)
                         loading.visibility = View.GONE
                         body.root.visibility = View.VISIBLE
-                        goToHome()
+                        goToSpecialityActivity()
                     }
                 }
             }
@@ -115,8 +116,9 @@ class LoginActivity : BaseAuthActivity() {
         }
     }
 
-    private fun goToHome() {
-        goToActivity<MainActivity>()
+    private fun goToSpecialityActivity() {
+        goToActivity<SpecialtyActivity>()
+        finish()
     }
 
     override fun setUpInputsValidations() {

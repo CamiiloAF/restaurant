@@ -15,6 +15,7 @@ class MyApplication : Application() {
             modules(
                 listOf(
                     mainModule,
+                    specialityModule,
                     authModule,
                     homeModule,
                     categoryDetailModule,

@@ -13,6 +13,7 @@ import com.camiloagudelo.restaurantws.domain.LoginRequest
 import com.camiloagudelo.restaurantws.ui.MainActivity
 import com.camiloagudelo.restaurantws.ui.auth.BaseAuthActivity
 import com.camiloagudelo.restaurantws.ui.login.LoginViewModel
+import com.camiloagudelo.restaurantws.ui.specialty.SpecialtyActivity
 import com.camiloagudelo.restaurantws.utils.afterTextChanged
 import com.camiloagudelo.restaurantws.utils.goToActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -112,15 +113,16 @@ class SignUpActivity : BaseAuthActivity() {
                     is Resource.Success -> {
                         binding.signUpLoading.visibility = View.GONE
                         binding.btnSignUp.visibility = View.VISIBLE
-                        goToHome()
+                        goToSpecialityActivity()
                     }
                 }
             }
         }
     }
 
-    private fun goToHome() {
-        goToActivity<MainActivity>()
+    private fun goToSpecialityActivity() {
+        goToActivity<SpecialtyActivity>()
+        finish()
     }
 
     override fun setUpInputsValidations() {
