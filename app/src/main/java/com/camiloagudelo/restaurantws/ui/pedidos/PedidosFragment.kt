@@ -1,6 +1,5 @@
 package com.camiloagudelo.restaurantws.ui.pedidos
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,15 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
-import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
 import com.camiloagudelo.restaurantws.databinding.PedidosFragmentBinding
 import com.camiloagudelo.restaurantws.ui.pedidos.adapter.PedidosRecyclerAdapter
 import com.camiloagudelo.restaurantws.ui.pedidos.adapter.PedidosRecyclerCallback
 import kotlinx.coroutines.flow.collect
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PedidosFragment : Fragment() {
@@ -31,9 +29,14 @@ class PedidosFragment : Fragment() {
     private lateinit var rcViewAdapter: PedidosRecyclerAdapter
 
     private val pedidosRecyclerCallback = object : PedidosRecyclerCallback {
-        override suspend fun remove(item: Pedido, position: Int) {
+        override fun remove(item: Pedido, position: Int) {
             pedidosViewModel.deletePedido(item)
             observeDeletePedido(position)
+        }
+
+        override fun onClickItem(item: Pedido) {
+            val action = PedidosFragmentDirections.actionPedidosFragmentToPedidoDetailFragment(item)
+            findNavController().navigate(action)
         }
 
         private fun observeDeletePedido(position: Int) {

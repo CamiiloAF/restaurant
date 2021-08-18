@@ -21,6 +21,7 @@ class MyApplication : Application() {
                     homeModule,
                     categoryDetailModule,
                     pedidosModule,
+                    pedidosDetailProductModule,
                 )
             )
         }

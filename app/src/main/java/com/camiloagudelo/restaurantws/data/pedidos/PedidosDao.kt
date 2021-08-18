@@ -18,6 +18,6 @@ interface PedidosDao {
     @Update
     suspend fun update(pedido: Pedido): Int
 
-    @Delete
-    suspend fun delete(pedido: Pedido)
+    @Query("DELETE FROM pedidos WHERE id = :pedidoId")
+    suspend fun deleteByUserId(pedidoId: Int)
 }

@@ -27,6 +27,7 @@ import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.auth.models.PrivacyPoliciesResponse
 import com.camiloagudelo.restaurantws.data.auth.models.SignUpClient
 import com.camiloagudelo.restaurantws.data.home.models.CategoriesResponse
+import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
 import com.camiloagudelo.restaurantws.data.pedidos.models.PedidosResponse
 import com.camiloagudelo.restaurantws.data.products.models.ProductsResponse
 import com.camiloagudelo.restaurantws.data.specialty.models.SpecialityResponse
@@ -68,7 +69,7 @@ class ApiService {
             val json = String(response.readBytes())
             val apiResponse = Gson().fromJson(json, ApiResponse::class.java)
 
-            if (apiResponse.respuesta == "ERROR") {
+            if (apiResponse.respuesta != "OK") {
                 throw Exception(apiResponse.mensaje)
             }
 
@@ -145,6 +146,17 @@ class ApiService {
         val callback = object : ApiServiceCallback {
             override suspend fun execute(): HttpResponse {
                 return client.get(path = "especialidad")
+            }
+        }
+        return doCall(callback)
+    }
+
+    suspend fun sendPedido(pedido: Pedido): ApiResponse{
+        val callback = object : ApiServiceCallback {
+            override suspend fun execute(): HttpResponse {
+                return client.post(path = "pedidos"){
+                    body = pedido
+                }
             }
         }
         return doCall(callback)

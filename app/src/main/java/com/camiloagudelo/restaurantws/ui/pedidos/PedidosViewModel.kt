@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
-import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.pedidos.PedidosRepository
 import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
 import kotlinx.coroutines.flow.*
@@ -15,14 +14,16 @@ class PedidosViewModel(private val pedidosRepository: PedidosRepository) : ViewM
     val pedidosResult: StateFlow<Resource<List<Pedido>>> = _pedidosResult
 
     private val _deletePedidoResult = MutableStateFlow<Resource<Unit>>(Resource.Empty())
-    val deletePedidoResult: StateFlow<Resource<Unit>> = _deletePedidoResult
 
     fun getPedidos(currentUser: CurrentUser) {
-        if (_pedidosResult.value is Resource.Success) return
         viewModelScope.launch {
-            pedidosRepository.getPedidosByClient(currentUser)
+            pedidosRepository.getLocalPedidos()
+
                 .onStart { _pedidosResult.value = Resource.Loading() }
                 .catch { e -> _pedidosResult.value = Resource.Error(e) }
+                .combine(pedidosRepository.getPedidosByClient(currentUser)) { a, b ->
+                    b.apply { addAll(0, a) }
+                }
                 .collect { response ->
                     _pedidosResult.value = Resource.Success(response)
                 }

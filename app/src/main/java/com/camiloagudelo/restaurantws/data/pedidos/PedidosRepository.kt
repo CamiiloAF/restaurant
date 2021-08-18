@@ -1,28 +1,25 @@
 package com.camiloagudelo.restaurantws.data.pedidos
 
 import com.camiloagudelo.restaurantws.core.api.ApiService
+import com.camiloagudelo.restaurantws.core.models.ApiResponse
 import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
 import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 
 class PedidosRepository(private val apiService: ApiService, private val pedidosDao: PedidosDao) {
-    suspend fun getPedidosByClient(currentUser: CurrentUser): Flow<List<Pedido>> = flow {
-        val localPedidos = pedidosDao.getAll().first().toMutableList()
-        val remotePedidos = apiService.getPedidosByClient(currentUser)
+    fun getLocalPedidos(): Flow<List<Pedido>> = pedidosDao.getAll()
 
-        localPedidos.addAll(remotePedidos.pedidos)
-
-        emit(localPedidos)
+    suspend fun getPedidosByClient(currentUser: CurrentUser): Flow<MutableList<Pedido>> = flow {
+        emit(apiService.getPedidosByClient(currentUser).pedidos.toMutableList())
     }.flowOn(Dispatchers.IO)
 
     fun getPedido(): Flow<Pedido?> = pedidosDao.getOne()
 
     suspend fun deletePedido(pedido: Pedido): Flow<Unit> = flow {
-        emit(pedidosDao.delete(pedido))
+        emit(pedidosDao.deleteByUserId(pedido.id!!))
     }
 
     suspend fun savePedido(pedido: Pedido): Flow<Pedido> = flow {
@@ -34,5 +31,11 @@ class PedidosRepository(private val apiService: ApiService, private val pedidosD
         }
 
         emit(pedido)
+    }
+
+    suspend fun sendPedido(pedido: Pedido): Flow<ApiResponse> = flow {
+        val response = apiService.sendPedido(pedido.copy(id = null))
+        pedidosDao.deleteByUserId(pedido.id!!)
+        emit(response)
     }
 }

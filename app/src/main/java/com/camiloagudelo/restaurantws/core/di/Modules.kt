@@ -11,6 +11,7 @@ import com.camiloagudelo.restaurantws.ui.MainViewModel
 import com.camiloagudelo.restaurantws.ui.category_detail.CategoryDetailViewModel
 import com.camiloagudelo.restaurantws.ui.home.HomeViewModel
 import com.camiloagudelo.restaurantws.ui.login.LoginViewModel
+import com.camiloagudelo.restaurantws.ui.pedido_detail.PedidoDetailViewModel
 import com.camiloagudelo.restaurantws.ui.pedidos.PedidosViewModel
 import com.camiloagudelo.restaurantws.ui.sign_up.SignUpViewModel
 import com.camiloagudelo.restaurantws.ui.specialty.SpecialtyViewModel
@@ -55,4 +56,8 @@ val pedidosModule = module {
     single { PedidosRepository(get(), get<RestaurantWSDatabase>().pedidosDao()) }
 
     viewModel { PedidosViewModel(get()) }
+}
+
+val pedidosDetailProductModule = module {
+    viewModel { PedidoDetailViewModel(get()) }
 }

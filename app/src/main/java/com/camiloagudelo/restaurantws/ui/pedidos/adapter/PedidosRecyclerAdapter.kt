@@ -26,13 +26,13 @@ class PedidosRecyclerAdapter(
             imgDeletePedido.apply {
                 if (pedido.canDelete) {
                     isVisible = true
-                    setOnClickListener {
-                        runBlocking { pedidosRecyclerCallback.remove(pedido, position) }
-                    }
+                    setOnClickListener { pedidosRecyclerCallback.remove(pedido, position) }
                 } else {
                     isVisible = false
                 }
             }
+
+            root.setOnClickListener { pedidosRecyclerCallback.onClickItem(pedido) }
 
             txtPedidoDate.text = pedido.created_at.toString()
             txtTotal.text = pedido.total.toString()

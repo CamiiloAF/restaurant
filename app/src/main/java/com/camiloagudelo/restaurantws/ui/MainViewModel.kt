@@ -36,7 +36,7 @@ class MainViewModel(private val pedidosRepository: PedidosRepository) : ViewMode
             0,
             Date(),
             true,
-            mutableListOf()
+            listOf()
         )
     }
 

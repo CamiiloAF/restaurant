@@ -27,5 +27,18 @@
         android:id="@+id/pedidosFragment"
         android:name="com.camiloagudelo.restaurantws.ui.pedidos.PedidosFragment"
         android:label="Pedidos"
-        tools:layout="@layout/pedidos_fragment" /><action android:id="@+id/action_global_pedidosFragment" app:destination="@id/pedidosFragment"/>
+        tools:layout="@layout/pedidos_fragment" >
+        <action
+            android:id="@+id/action_pedidosFragment_to_pedidoDetailFragment"
+            app:destination="@id/pedidoDetailFragment" />
+    </fragment><action android:id="@+id/action_global_pedidosFragment" app:destination="@id/pedidosFragment"/>
+    <fragment
+        android:id="@+id/pedidoDetailFragment"
+        android:name="com.camiloagudelo.restaurantws.ui.pedido_detail.PedidoDetailFragment"
+        android:label="pedido_detail_fragment"
+        tools:layout="@layout/pedido_detail_fragment" >
+        <argument
+            android:name="pedido"
+            app:argType="com.camiloagudelo.restaurantws.data.pedidos.models.Pedido" />
+    </fragment>
 </navigation>
