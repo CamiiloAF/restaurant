@@ -135,8 +135,6 @@ class SignUpActivity : BaseAuthActivity() {
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                        binding.signUpLoading.visibility = View.GONE
-                        binding.btnSignUp.visibility = View.VISIBLE
                         goToSpecialityActivity()
                     }
                 }
@@ -171,7 +169,7 @@ class SignUpActivity : BaseAuthActivity() {
     }
 
     private fun showPrivacyPoliciesDialog() {
-        if(signUpViewModel.privacyPoliciesResult.value.data == null){
+        if (signUpViewModel.privacyPoliciesResult.value.data == null) {
             Toast.makeText(this, "Espera un momento", Toast.LENGTH_SHORT).show()
             return
         }

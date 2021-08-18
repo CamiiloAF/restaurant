@@ -10,7 +10,6 @@ import com.camiloagudelo.restaurantws.R
 import com.camiloagudelo.restaurantws.core.api.Resource
 import com.camiloagudelo.restaurantws.databinding.ActivityLoginBinding
 import com.camiloagudelo.restaurantws.domain.LoginRequest
-import com.camiloagudelo.restaurantws.ui.MainActivity
 import com.camiloagudelo.restaurantws.ui.auth.BaseAuthActivity
 import com.camiloagudelo.restaurantws.ui.sign_up.SignUpActivity
 import com.camiloagudelo.restaurantws.ui.specialty.SpecialtyActivity
@@ -32,7 +31,7 @@ class LoginActivity : BaseAuthActivity() {
     }
 
     private fun checkPreferences() {
-        val sharedPref = getSharedPreferences("x",Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("x", Context.MODE_PRIVATE)
         val loginRequest = LoginRequest.fromJson(
             sharedPref.getString(getString(R.string.saved_remember_user), null)
         )
@@ -79,10 +78,8 @@ class LoginActivity : BaseAuthActivity() {
                         loading.visibility = View.VISIBLE
                         body.root.visibility = View.GONE
                     }
-                    is Resource.Success -> with(binding) {
+                    is Resource.Success -> {
                         saveRememberMePrefs(it.data!!.second)
-                        loading.visibility = View.GONE
-                        body.root.visibility = View.VISIBLE
                         goToSpecialityActivity()
                     }
                 }
@@ -92,7 +89,7 @@ class LoginActivity : BaseAuthActivity() {
 
 
     private fun saveRememberMePrefs(loginRequest: LoginRequest) {
-        val sharedPref = this@LoginActivity.getSharedPreferences("x",Context.MODE_PRIVATE)
+        val sharedPref = this@LoginActivity.getSharedPreferences("x", Context.MODE_PRIVATE)
 
         with(sharedPref.edit()) {
             putString(
@@ -111,35 +108,35 @@ class LoginActivity : BaseAuthActivity() {
     override fun setUpInputsValidations() {
         binding.body
             .apply {
-            loginEmail.afterTextChanged {
-                loginViewModel.loginDataChanged(
-                    loginEmail.text.toString(),
-                    password.text.toString()
-                )
-            }
-            password.apply {
-                afterTextChanged {
+                loginEmail.afterTextChanged {
                     loginViewModel.loginDataChanged(
                         loginEmail.text.toString(),
                         password.text.toString()
                     )
                 }
-
-                setOnEditorActionListener { _, actionId, _ ->
-                    when (actionId) {
-                        EditorInfo.IME_ACTION_DONE ->
-                            loginViewModel.login(
-                                buildLoginRequest()
-                            )
+                password.apply {
+                    afterTextChanged {
+                        loginViewModel.loginDataChanged(
+                            loginEmail.text.toString(),
+                            password.text.toString()
+                        )
                     }
-                    false
-                }
 
-                login.setOnClickListener {
-                    loginViewModel.login(buildLoginRequest())
+                    setOnEditorActionListener { _, actionId, _ ->
+                        when (actionId) {
+                            EditorInfo.IME_ACTION_DONE ->
+                                loginViewModel.login(
+                                    buildLoginRequest()
+                                )
+                        }
+                        false
+                    }
+
+                    login.setOnClickListener {
+                        loginViewModel.login(buildLoginRequest())
+                    }
                 }
             }
-        }
     }
 
     private fun buildLoginRequest(): LoginRequest {
