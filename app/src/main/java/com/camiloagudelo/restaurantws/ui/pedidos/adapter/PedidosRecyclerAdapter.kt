@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.camiloagudelo.restaurantws.data.auth.models.CurrentUser
-import com.camiloagudelo.restaurantws.data.auth.models.LoggedInUser
 import com.camiloagudelo.restaurantws.data.pedidos.models.Pedido
 import com.camiloagudelo.restaurantws.databinding.PedidoItemBinding
-import kotlinx.coroutines.runBlocking
+import com.camiloagudelo.restaurantws.utils.format
 
 class PedidosRecyclerAdapter(
     private var items: MutableList<Pedido>,
@@ -24,7 +23,7 @@ class PedidosRecyclerAdapter(
             val pedido = items[position]
 
             imgDeletePedido.apply {
-                if (pedido.canDelete) {
+                if (pedido.isLocal) {
                     isVisible = true
                     setOnClickListener { pedidosRecyclerCallback.remove(pedido, position) }
                 } else {
@@ -34,10 +33,10 @@ class PedidosRecyclerAdapter(
 
             root.setOnClickListener { pedidosRecyclerCallback.onClickItem(pedido) }
 
-            txtPedidoDate.text = pedido.created_at.toString()
-            txtTotal.text = pedido.total.toString()
+            txtPedidoDate.text = pedido.created_at.format()
+            "$ ${pedido.total}".also { txtTotal.text = it }
             txtClientName.text = CurrentUser.nombre
-            txtNumberOfPedido.text = pedido.id.toString()
+            if(!pedido.isLocal)  txtNumberOfPedido.text = pedido.id.toString()
         }
     }
 

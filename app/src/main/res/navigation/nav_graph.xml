@@ -35,8 +35,8 @@
     <fragment
         android:id="@+id/pedidoDetailFragment"
         android:name="com.camiloagudelo.restaurantws.ui.pedido_detail.PedidoDetailFragment"
-        android:label="pedido_detail_fragment"
-        tools:layout="@layout/pedido_detail_fragment" >
+        android:label="Pedido"
+        tools:layout="@layout/pedido_detail_fragment">
         <argument
             android:name="pedido"
             app:argType="com.camiloagudelo.restaurantws.data.pedidos.models.Pedido" />

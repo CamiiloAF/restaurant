@@ -7,6 +7,10 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 /**
  * Extension function to simplify setting an afterTextChanged action to EditText components.
@@ -33,4 +37,10 @@ inline fun <reified T : Activity> Activity.goToActivity(noinline init: Intent.()
     val intent = Intent(this, T::class.java)
     intent.init()
     startActivity(intent)
+}
+
+fun Date.format(): String{
+    val pattern = "yyyy-MM-dd HH:mm aa"
+    val simpleDateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+    return simpleDateFormat.format(this)
 }

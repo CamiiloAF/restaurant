@@ -21,7 +21,7 @@ data class Pedido(
     @Expose(serialize = false)
     val created_at: Date,
     @Expose(serialize = false)
-    val canDelete: Boolean = false,
+    val isLocal: Boolean = false,
     @Expose(serialize = false)
     val products: List<Product>,
 ) : Parcelable {

@@ -35,6 +35,8 @@ class PedidosFragment : Fragment() {
         }
 
         override fun onClickItem(item: Pedido) {
+            if(!item.isLocal) return
+
             val action = PedidosFragmentDirections.actionPedidosFragmentToPedidoDetailFragment(item)
             findNavController().navigate(action)
         }

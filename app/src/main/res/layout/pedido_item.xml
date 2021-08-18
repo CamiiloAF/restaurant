@@ -25,11 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtClientName"
         tools:text="$ 35000" />
@@ -39,10 +37,12 @@
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/colorSecondary"
         app:layout_constraintBottom_toBottomOf="@+id/txtTotal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/txtTotal"
-        app:srcCompat="@drawable/ic_baseline_delete_forever_24" />
+        app:srcCompat="@drawable/ic_baseline_delete_forever_24"
+        app:tint="@color/colorSecondary" />
 
     <TextView
         android:id="@+id/txtNumberOfPedido"
@@ -62,4 +62,18 @@
         app:layout_constraintStart_toStartOf="@+id/txtPedidoDate"
         app:layout_constraintTop_toBottomOf="@+id/txtPedidoDate"
         tools:text="Camilo" />
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgDeletePedido" />
 </androidx.constraintlayout.widget.ConstraintLayout>
