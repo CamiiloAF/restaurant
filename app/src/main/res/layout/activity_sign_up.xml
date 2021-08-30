@@ -14,6 +14,7 @@
         android:ems="10"
         android:hint="Nombre"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -27,6 +28,7 @@
         android:ems="10"
         android:hint="Correo"
         android:inputType="textEmailAddress"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/name"
         app:layout_constraintStart_toStartOf="@+id/name"
         app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -39,6 +41,7 @@
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/sign_up_email"
         app:layout_constraintStart_toStartOf="@+id/sign_up_email"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_email" />
@@ -51,6 +54,7 @@
         android:ems="10"
         android:hint="Ciudad"
         android:inputType="textPersonName"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="@+id/signUpPassword"
         app:layout_constraintStart_toStartOf="@+id/signUpPassword"
         app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
